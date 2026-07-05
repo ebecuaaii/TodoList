@@ -21,7 +21,11 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Page<Task> getAllTasks(String search, Boolean completed, Pageable pageable) {
-        return taskRepository.findTasks(search, completed, pageable);
+        String searchParam = (search != null && !search.trim().isEmpty())
+                ? "%" + search.trim().toLowerCase() + "%"
+                : null;
+
+        return taskRepository.findTasks(searchParam, completed, pageable);
     }
 
     @Override

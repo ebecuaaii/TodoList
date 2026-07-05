@@ -11,11 +11,9 @@ import com.todolist.entity.Task;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
     @Query("SELECT t FROM Task t WHERE " +
-            "(:search IS NULL OR LOWER(t.title) LIKE LOWER(CONCAT('%', :search, '%')) OR LOWER(t.description) LIKE LOWER(CONCAT('%', :search, '%'))) AND "
-            +
+            "(:search IS NULL OR LOWER(t.title) LIKE :search OR LOWER(t.description) LIKE :search) AND " +
             "(:completed IS NULL OR t.completed = :completed)")
     Page<Task> findTasks(@Param("search") String search,
             @Param("completed") Boolean completed,
-            Pageable pageable); // phân trang
-
+            Pageable pageable);
 }

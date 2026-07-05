@@ -34,6 +34,7 @@ const Home = () => {
 
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Dynamic stats for notifications
   const activeTasksCount = tasks.filter(t => !t.completed).length;
@@ -77,15 +78,15 @@ const Home = () => {
     <div className="home-container">
       <header className="home-header">
         <div className="header-actions">
-          {/* Calendar Button */}
-          <button className="header-action-btn calendar-btn" onClick={() => setIsCalendarOpen(true)} title="Lịch biểu">
+          {/* Calendar Button (Desktop Only) */}
+          <button className="header-action-btn calendar-btn desktop-only" onClick={() => setIsCalendarOpen(true)} title="Lịch biểu">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
           </button>
 
-          {/* Notification Button */}
-          <div className="notification-wrapper">
+          {/* Notification Button (Desktop Only) */}
+          <div className="notification-wrapper desktop-only">
             <button className="header-action-btn notification-btn" onClick={() => setIsNotificationOpen(!isNotificationOpen)} title="Thông báo">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -113,8 +114,8 @@ const Home = () => {
             )}
           </div>
 
-          {/* Theme Toggle Button */}
-          <button className="header-action-btn theme-toggle-btn" onClick={toggleTheme} title="Chuyển chế độ Sáng/Tối">
+          {/* Theme Toggle Button (Desktop Only) */}
+          <button className="header-action-btn theme-toggle-btn desktop-only" onClick={toggleTheme} title="Chuyển chế độ Sáng/Tối">
             {isLightMode ? (
               // Moon Icon
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -126,6 +127,13 @@ const Home = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.364l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
               </svg>
             )}
+          </button>
+
+          {/* Mobile Menu Hamburger Button */}
+          <button className="header-action-btn mobile-menu-btn" onClick={() => setIsMobileMenuOpen(true)} title="Menu">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
           </button>
         </div>
         <h1 className="main-title">TodoWork</h1>
@@ -183,6 +191,51 @@ const Home = () => {
           onClose={() => setIsCalendarOpen(false)}
           onTaskAction={fetchTasks}
         />
+      )}
+
+      {/* Mobile Sidebar Menu Drawer */}
+      {isMobileMenuOpen && (
+        <div className="mobile-sidebar-overlay" onClick={() => setIsMobileMenuOpen(false)}>
+          <div className="mobile-sidebar" onClick={(e) => e.stopPropagation()}>
+            <div className="sidebar-header">
+              <h3>Menu</h3>
+              <button className="sidebar-close-btn" onClick={() => setIsMobileMenuOpen(false)}>&times;</button>
+            </div>
+            <div className="sidebar-content">
+              <button className="sidebar-item" onClick={() => { setIsCalendarOpen(true); setIsMobileMenuOpen(false); }}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                Lịch biểu
+              </button>
+              
+              <button className="sidebar-item" onClick={() => { setIsNotificationOpen(true); setIsMobileMenuOpen(false); }}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+                Thông báo ({activeTasksCount} nhiệm vụ)
+              </button>
+
+              <button className="sidebar-item" onClick={() => { toggleTheme(); setIsMobileMenuOpen(false); }}>
+                {isLightMode ? (
+                  <>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                    Chế độ Tối
+                  </>
+                ) : (
+                  <>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.364l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+                    </svg>
+                    Chế độ Sáng
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

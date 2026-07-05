@@ -1,0 +1,46 @@
+.filter-container {
+  display: flex;
+  background: var(--bg-card);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(12px);
+  width: max-content;
+}
+
+.filter-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: calc(var(--radius-md) - 4px);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+}
+
+.filter-btn:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.filter-btn-all.active {
+  background: #3b82f6;
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+}
+
+.filter-btn-active.active {
+  background: #e09a43;
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(224, 154, 67, 0.4);
+}
+
+.filter-btn-completed.active {
+  background: #10b981;
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+}
